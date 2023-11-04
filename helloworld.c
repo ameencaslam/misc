@@ -7,7 +7,7 @@ void main()
     int i,l,j;
     char txt[30];
     char empty[30];
-    char alpha[]=" abcdefghijklmnopqrstuvwxyz";
+    char alpha[]="abcdefghijklmnopqrstuvwxyz ";
     printf("Enter : ");
     gets(txt);
     l=strlen(txt);

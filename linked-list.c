@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+// increase nums in insert function main
+int count=0,nums=0,ch,data,position;
 
 struct node
 {
     int data;
     struct node *next;
-}struct node *head = NULL;
+};
+
+struct node *head = NULL;
 
 struct node *nodeCreate(int data)
 {
@@ -25,6 +29,7 @@ void insBegin(int data)
     struct node *newNode = nodeCreate(data);
     newNode->next=head;
     head=newNode;
+    nums++;
 }
 
 void insEnd(int data)
@@ -34,6 +39,7 @@ void insEnd(int data)
     if(head == NULL)
     {
         head=newNode;
+        nums++;
         return;
     }
     temp=head;
@@ -42,50 +48,116 @@ void insEnd(int data)
         temp = temp->next;
     }
     temp->next=newNode;
+    nums++;
 }
 
-void insMid(int data, int pos)
+void insMid(int data, int position)
 {
-    struct node *temp=head;
-    int crnt=0;
-    
-    while(temp->next != NULL)
+    if((position <= 0) || ((position > nums) && nums != 0))
     {
-        temp=temp->next;
-        crnt++;
-    }
-    // resume from here
-    if((pos <= 0))
-    {
+        printf("\nInvalid Position!\n");
         return;
     }
     
-    if(pos == 1)
+    if(position == 1)
     {
         insBegin(data);
         return;
     }
 
+    if(position == nums)
+    {
+        insEnd(data);
+        return;
+    }
 
+    struct node *temp,*newNode=nodeCreate(data);
+    temp=head;
+    count=1;
+    while(count < position-1)
+    {
+        temp=temp->next;
+        count++;
+    }
+
+    newNode->next=temp->next;
+    temp->next=newNode;
+    nums++;
+}
+
+void nodeInsert()
+{
+    printf("\n\n1. Start\n2. End\n3. Custom\n\nEnter where to Insert : ");
+    scanf("%d",&ch);
+    printf("\nEnter the Value : ");
+    scanf("%d",&data);
+    if(ch == 3)
+    {
+        printf("\nEnter the Position to Insert : ");
+        scanf("%d",&position);
+    }
+    switch(ch)
+    {
+        case 1:
+        insBegin(data);
+        break;
+
+        case 2:
+        insEnd(data);
+        break;
+
+        case 3:
+        insMid(data,position);
+        break;
+
+        default:
+        printf("\nInvalid Choice!\n");
+    }
+}
+
+void nodeDisplay()
+{
+    if(nums == 0)
+    {
+        printf("\nEmpty!\n");
+        return;
+    }
+    
+    count=1;
+    struct node *temp;
+    temp=head;
+    while(temp->next != NULL)
+    {
+        printf("\n%d => %d",count,temp->data);
+        temp=temp->next;
+        count++;
+    }
+    printf("\n%d => %d\n\n",count,temp->data);
 }
 
 void main()
 {
-    int ch;
-    printf("1. Insertion\n2. Display\n\nEnter your Choice : ");
-    scanf("%d",&ch);
-    switch(ch)
+    do
     {
-        case 1:
-        nodeInsert();
-        break;
+        printf("\n1. Insertion\n2. Display\n4.EXIT\n\nEnter your Choice : ");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+            nodeInsert();
+            break;
 
-        case 2:
-        nodeDisplay();
-        break;
+            case 2:
+            nodeDisplay();
+            break;
 
-        case default:
-        printf("Enter Valid Choice!");
-        break;
-    }
+            case 4:
+            break;
+
+            default:
+            printf("\nInvalid Choice!\n");
+            break;
+        }
+    } while (ch != 4);
+    printf("\n\nThank you...");
 }
